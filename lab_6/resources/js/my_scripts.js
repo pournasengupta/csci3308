@@ -170,5 +170,5 @@ function loadStatsPage(){
 */
 
 function loadPlayersPage(){
-		
+	document.getElementById('p_year').innerHTML = fruit[fruit_index].fruit_name;
 }; 
