@@ -1,0 +1,281 @@
+<!--Author: Pourna Sengupta-->
+<!DOCTYPE html>
+<html lang="en">
+<!--HEAD-->
+  <head class="formHead">
+    <title>Forms</title>
+
+    <meta charset="UTF-8"
+          name="viewport" 
+          content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!--Images-->
+    <link rel="headshot"
+          href="/Users/pournasengupta/Dropbox/Fall2020/CSCI3308/homework1/headshot.png" 
+          type="image">
+    <link rel="culture"
+          href="/Users/pournasengupta/Dropbox/Fall2020/CSCI3308/homework1/culture" 
+          type="image">   
+    <link rel="nature"
+          href="/Users/pournasengupta/Dropbox/Fall2020/CSCI3308/homework1/natures" 
+          type="image"> 
+    <link rel="art"
+          href="/Users/pournasengupta/Dropbox/Fall2020/CSCI3308/homework1/art" 
+          type="image">  
+
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" 
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" 
+          integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" 
+          crossorigin="anonymous">
+    <link href="/Users/pournasengupta/Dropbox/Fall2020/CSCI3308/homework1/css/my_style.css" 
+          type="text/css" 
+          rel="stylesheet">
+    <link rel="stylesheet" 
+          href="https://www.w3schools.com/w3css/4/w3.css">
+
+    <!--MaxCDN from w3 schools-->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
+    <!--Fonts-->
+    <link href='https://fonts.googleapis.com/css?family=Bebas Neue' rel='stylesheet'>
+    <link href='https://fonts.googleapis.com/css?family=Gabriela' rel='stylesheet'>
+
+  </head>
+
+  <!--HEAD-->
+  <body class="formBody">
+<!--Navigation Buttons-->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <a class="navbar-brand" href="https://github.com/pournasengupta/csci3308Labs.git">
+        <img class="rounded-circle" src="file:///Users/pournasengupta/Dropbox/Fall2020/CSCI3308/homework1/headshot.png" alt="" width="30" height="30">
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+  
+  <!--Navigation Options-->
+      <div class="collapse navbar-collapse" id="navbarText">
+        <ul class="navbar-nav mr-auto">
+  
+  <!--Home Button-->
+  <li class="nav-item active">
+      <a class="nav-link" href="mypage_bootstrap.html">Home</a>
+    </li>
+  
+  <!--Projects Button-->
+          <li class="nav-item active">
+            <a class="nav-link" href="project.html">Projects</a>
+          </li>
+  
+  <!--Form Button-->
+          <li class="nav-item active">
+            <a class="nav-link" href="form.html">Form</a>
+          </li>
+        </ul>
+    </nav>
+
+    <br>
+    <!--Title-->
+    <h1 class="title">Interests </h1> 
+
+<!--FORM-->
+<br>
+<div class="form">
+    <form action="form.html">
+        <!--Interest Name-->
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label title" style="font-size: large;" for="interest">Interest Name</label> 
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="interest" id="interestname" placeholder="Enter Interest">
+            </div>
+        </div>
+
+        <!--Enter Text About Interest-->
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label title" for="interesttext" style="font-size: large;">Text About Interest</label> 
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="interesttext" id="aboutInterest" placeholder="About Interest">
+            </div>
+        </div>
+    </form>
+  </div>
+
+  <div class="dropdown" id="tweets" style="text-align: left;">
+      <legend class="col-form-label col-sm-2 pt-0 title" style="font-size: large;">Upload a File</legend>
+      <div class="col-sm-10">
+          <select name="tweetnum" id="tweets" class="dropdown custom-select-sm">
+            <option selected="">Select Number of Tweets</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+          </select>
+      </div>
+      <br>
+
+      <!--Level of Interest--> 
+			 <fieldset class="form-group">
+				<div class="row">
+                          <legend class="col-form-label col-sm-2 pt-0 title" style="font-size: large;">Level of Interest</legend>
+                          <div class="interestBox">
+                          <div class="col-sm-10">
+                                
+					<div class="form-check">
+					  <input class="form-check-input" type="radio" name="interestlevel" id="level" value="1" required="">
+					  <label class="form-check-label" for="level">
+						1
+					  </label>
+					</div>
+					<div class="form-check">
+					  <input class="form-check-input" type="radio" name="interestlevel" id="level" value="2">
+					  <label class="form-check-label" for="level">
+						2
+					  </label>
+					</div>
+                          </div>
+                          <div class="col-sm-10">
+					<div class="form-check">
+					  <input class="form-check-input" type="radio" name="interestlevel" id="level" value="3" required="">
+					  <label class="form-check-label" for="level">
+						3
+					  </label>
+					</div>
+					<div class="form-check">
+					  <input class="form-check-input" type="radio" name="interestlevel" id="level" value="4">
+					  <label class="form-check-label" for="level">
+					      4
+					  </label>
+					</div>
+				  </div><div class="col-sm-10">
+					<div class="form-check">
+					  <input class="form-check-input" type="radio" name="interestlevel" id="level" value="5" required="">
+					  <label class="form-check-label" for="level">
+						5
+					  </label>
+					</div>
+                          </div>
+                          </div>
+				</div>
+                    </fieldset>
+                    
+            <form class="form">
+                  <h1 class="titleleft" style="font-size: large;">Please sign in</h1>
+                  <label for="inputEmail" class="sr-only" >Email address</label>
+                  <input type="email" id="inputEmail" class="form-control" style="width: 300px" placeholder="Email address" required autofocus>
+                  <label for="inputPassword" class="sr-only" >Password</label>
+                  <input type="password" id="inputPassword" class="form-control" style="width: 300px" placeholder="Password" required>
+                        <div class="checkbox mb-3" >
+                            <label>
+                              <input type="checkbox" value="remember-me"> Remember me | 
+                            </label>
+                            <a href="">Forgot Password?</a>
+                        </div>
+                  <div class="buttons btn-large">
+                  <button type="submit"style="font-size: 30px;
+                  border-color: black; 
+                  background-color: powderblue;
+                  color: black;">
+                        Sign in
+                  </button>
+                  <a class="buttons" style="font-size: 30px;
+                        border-color: black; 
+                        background-color: powderblue;
+                        color: black;
+                        href='register.html';">
+                        Register
+                  </a>
+                        <p class="mt-5 mb-3 text-muted"></p>
+                  </div>
+            </form>
+                  
+      <!--Submit Button-->
+      <div class="buttons" style="text-align: center;">
+            <button type="submit" style="background-color: powderblue" onclick="document.location='/Users/pournasengupta/Dropbox/Fall2020/CSCI3308/homework1/mypage_bootstrap.html'">
+                    Submit
+            </button>
+         </div>       
+
+
+<br>
+<br>
+  <div class="background" style="background-color: powderblue;">
+    <!--My Interests-->
+    <h3 class="title"> My Interests</h3>
+
+    <!--Change the list of your "Interests" into a horizontal list of 3 cards, 
+        one for each interest. In each card, include an image that represents 
+        the interest, a title of the interest, and why you like the interest.-->
+
+     <div class="row">
+         <div class="col">
+             <!--CULTURE CARD-->
+            <div class="card" style="width: 18rem; height: 24rem;">
+               <img class="card" src="file:///Users/pournasengupta/Dropbox/Fall2020/CSCI3308/homework1/culture.jpg" 
+               alt="Culture Card Image"> 
+            </div>  
+            <br>            
+
+               <h4 class="section">--CULTURE--</h4>
+               <p class="subtitles">As I've grown older, I've connected
+                   a lot more with my Indian background. As a second generation
+                   child of two immigrant parents, I've found it really important 
+                   to stay in touch with my roots and culture, especially to stay 
+                   close with my family.</p>  
+        </div>
+
+        <div class="col">
+             <!--NATURE CARD-->
+            <div class="card" style="width: 18rem; height: 24rem;">
+                <img class="card" src="file:///Users/pournasengupta/Dropbox/Fall2020/CSCI3308/homework1/natures.jpg" alt="Nature Card Image">
+            </div>
+            <br>
+
+                <h4 class="section">--NATURE--</h4>
+                <p class="subtitles"> Some of my best memories have been in nature, 
+                    especially with my dog. I enjoy the freedom and brief break from 
+                    school and technology.I enjoy camping with my friends often to 
+                    take a quick break from school. </p> 
+        </div>
+             
+        <div class="col">
+             <!--ART CARD-->
+             <div class="card" style="width: 18rem; height: 24rem;">
+                <img class="card" src="file:///Users/pournasengupta/Dropbox/Fall2020/CSCI3308/homework1/art.jpg" alt="Art Card Image">
+             </div>
+             <br>
+
+                <h4 class="section">--ART--</h4>
+                <p class="subtitles">Though I'm still building my skills, I have learned 
+                    a lot of different art mediums. I knit, embrioder, paint, play music/sing, model, take pictures, 
+                and sketch. I also believe programming is a form of art I practice as well. I'm always looking for new things to learn and get better at. I find 
+                satisfaction in seeing my skills and art grow better and more technical 
+                with practice. </p> 
+        </div>
+
+     </div>
+     </div>
+
+     <!--Footer, LinkedIn Link-->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <footer style="text-align: center;"> 
+          <a class="footer" href="https://www.linkedin.com/in/pournasengupta" style="text-align: center;">
+              <img class="rounded-circle" src="file:///Users/pournasengupta/Dropbox/Fall2020/CSCI3308/homework1/linkedin.png" alt="" width="30" height="30" style="text-align: center;">
+            </a>
+      </footer>
+      </nav>
+      
+
+  </body>
