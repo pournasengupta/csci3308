@@ -8,6 +8,7 @@
 var express = require('express'); //Ensure our express framework has been added
 var app = express();
 var bodyParser = require('body-parser'); //Ensure our body-parser tool has been added
+const { response } = require('express');
 app.use(bodyParser.json());              // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
@@ -27,7 +28,7 @@ const dbConfig = {
 	port: 5432,
 	database: 'football_db',
 	user: 'postgres',
-	password: 'pwd'
+	password: 'june3rd'
 };
 
 var db = pgp(dbConfig);
@@ -96,6 +97,181 @@ app.get('/register', function(req, res) {
 });
 
 /*Add your other get/post request handlers below here: */
+app.get('/home', function(req, res) {
+	var query = 'select * from favorite_colors;';
+	db.any(query)
+        .then(function (rows) {
+            res.render('pages/home',{
+				my_title: "Home Page",
+				data: rows,
+				color: '',
+				color_msg: ''
+			})
+
+        })
+        .catch(function (err) {
+            console.log('error', err);
+            res.render('pages/home', {
+                my_title: 'Home Page',
+                data: '',
+                color: '',
+                color_msg: ''
+            })
+        })
+});
+
+
+app.get('/home/pick_color', function(req, res) {
+	var color_choice = req.query.color_selection; // Investigate why the parameter is named "color_selection"
+	// Write a SQL query to retrieve the colors from the database
+	var color_options = 'SELECT hex_value FROM favorite_colors;';
+	// Write a SQL query to retrieve the color message for the selected color
+	var color_message = 'SELECT color_msg FROM favorite_colors;';
+	db.task('get-everything', task => {
+        return task.batch([
+            task.any(color_options),
+            task.any(color_message, [color_choice])
+        ]);
+    })
+    .then(info => {
+    	res.render('pages/home',{
+				my_title: "Home Page",
+				// Return the color options
+				data: info[0], 
+				// Return the color choice
+				color: color_choice,
+				// Return the color message
+				color_msg: info[1][0].color_msg
+			})
+    })
+    .catch(err => {
+            console.log('error', err);
+            res.render('pages/home', {
+                my_title: 'Home Page',
+                data: '',
+                color: '',
+                color_msg: ''
+            })
+    });
+
+});
+
+
+app.post('/home/pick_color', function(req, res) {
+	var color_hex = req.body.color_hex;
+	var color_name = req.body.color_name;
+	var color_message = req.body.color_message;
+	// Write a SQL statement to insert a color into the favorite_colors table
+	var insert_statement ='INSERT INTO favorite_colors(hex_value, name, color_msg) VALUES($1, $2, $3) ON CONFLICT DO NOTHING;';
+	// Write a SQL statement to retrieve all of the colors in the favorite_colors table
+	var color_select =  'SELECT * FROM favorite_colors;';
+
+	db.task('get-everything', task => {
+        return task.batch([
+            task.any(insert_statement, [color_hex, color_name, color_message]),
+			task.any(color_select),
+        ]);
+    })
+    .then(info => {
+    	res.render('pages/home',{
+				my_title: "Home Page",
+				// Return the color choices
+				data: info[1], 
+				// Return the hex value of the color added to the table 
+				color: color_hex, 
+				// Return the color message of the color added to the table
+				color_msg: color_message
+			})
+    })
+    .catch(err => {
+            console.log('error', err);
+            res.render('pages/home', {
+                my_title: 'Home Page',
+                data: '',
+                color: '',
+                color_msg: ''
+            })
+    });
+});
+
+//#5. Team Stats Page 
+app.get('/team_stats', function(req, res) {
+	var gameStats = 'SELECT football_games.* (CASE WHEN home_score > visitor_score THEN "CU Boulder!" ELSE visitor_name END) AS Winner FROM football_games ORDERY BY game_date;';
+	var w = 'SELECT COUNT(*) AS Wins FROM football_games WHERE home_score > visitor_score;';
+	var l = 'SELECT COUNT(*) AS Losses FROM football_games WHERE home_score < visitor_score;';
+	//Loading Tables with Team Stats Data 
+	db.task('load-stats', task => 
+        task.batch([
+			task.any(gameStats), 
+			task.any(w), 
+			task.any(l)
+        ])
+	)
+	
+    .then(teamStats => 
+    	res.render('pages/team_stats',{
+				my_title: "Team Stats",
+				//game date 
+				gameData: teamStats[0], 
+				//wins
+				wins: teamStats[1][0].games_won,
+				//losses 
+				loss: teamStats[2][0].games_lost
+			})
+    )
+    .catch(err => {
+            console.log('error', err);
+            res.render('pages/team_stats', {
+				my_title: "Team Stats",
+                gameData: '',
+				wins: '',
+				loss: ''
+            })
+    });
+
+});
+
+
+//#6. Player Info Page
+app.get('/player_info', function(req, res){
+	var players = 'SELECT * FROM football_players ORDER BY id;';
+	db.task('load-players', task =>
+		task.any(players)
+	)
+
+	.then(playerInfo =>
+		res.render('pages/player_info', {
+			my_title: 'Player Info',
+			players: playerInfo, 
+			selected: null
+		})
+	)
+
+	.catch(error => {
+		console.log('error', err); 
+		response.render('pages/player_info', {
+			my_title: 'Player Info', 
+			players: '', 
+			selected: ''
+		})
+	});
+});
+
+app.get('/player_info/selectPlayer', function(req, res){
+	var id = parseInt(req.query.player_choice || 0);
+
+	selectPlayers = 'SELECT * FROM football_players ORDER BY id;';
+	selectedPlayer = 'SELECT * FROM football_players WHERE id=$1;', id; 
+
+	db.task('load-players', task =>
+		task.batch([
+			task.any(selectPlayers), 
+			task.oneOrNone(selectedPlayer)
+		])
+
+		.then
+	)
+})
 
 
 app.listen(3000);
