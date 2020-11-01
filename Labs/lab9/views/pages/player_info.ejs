@@ -7,8 +7,12 @@
 				<div class="card">
 				<!-- TODO: Modify the ejs code below, to conditionally set the image_src to be from our chosen player -->
 				  <% 
-				  var image_src = '../resources/img/helmet.jpg';
-				  
+				  var image_src = '';
+				  if(players) {
+					  players.forEach(function(item){
+						  image_src = item.img_src; 
+					  }); 
+				  }
 				  %>
 				 <img class="card-img-top" id="player_img" src= "<%- image_src %>" alt="Image of Football Player">
 				  <div class="card-body mx-auto">
@@ -17,7 +21,15 @@
 							 <option selected>Select Player</option>
 							 <!-- TODO: Populate our select with player options
 							 			For each player, set a new option with a value matching the palyer's id, 
-							 			but will display the player's name-->
+										 but will display the player's name-->
+										 <%
+										 if(players){
+											 var pSelect = ''; 
+											 players.forEach(function(item){
+												 pSelect += '<option value=\"' + item.name + '\">' + item.name + '<\option>';
+											 }); %>
+											 <%- pSelect %>
+										<% } %>
 						</select>
 					</form>
 				  </div>
@@ -29,16 +41,27 @@
 						<tr>
 							<!-- TODO: Set Player Information
 							 			If a player has been selected, fill in their information in each of the fields below.
-							 		    You'll need to calculate here the player's average rushing, receiving, and passing yards.-->
-							<th>Year</th>
-							<td>	</td>
-						</tr>
-						<tr>
-							<th>Major</th>
-							<td>	</td>
-						</tr>
-						<tr>
-							<th>Games Played</th>
+										 You'll need to calculate here the player's average rushing, receiving, and passing yards.-->
+										 <%if(players) {
+											 var playerInfo = '';
+											 players.forEach(function(item) {
+												playerInfo += '<tr>'; 
+												playerInfo += '<th>Year</th>'; 
+												playerInfo += '<td>' + item.year + '</td>'; 
+												playerInfo += '</tr>'; 
+
+												playerInfo += '<tr>'; 
+												playerInfo += '<th>Major</th>'; 
+												playerInfo += '<td>' + item.major + '</td>'; 
+												playerInfo += '</tr>'; 
+
+												playerInfo += '<tr>'; 
+												playerInfo += '<th>Games Played</th>'; 
+												
+											 }); %>
+											 <%- playerInfo %>
+										<% } %>
+						
 							<td>	</td>
 						</tr>
 						<tr>

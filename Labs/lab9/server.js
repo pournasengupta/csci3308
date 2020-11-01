@@ -124,9 +124,9 @@ app.get('/home', function(req, res) {
 app.get('/home/pick_color', function(req, res) {
 	var color_choice = req.query.color_selection; // Investigate why the parameter is named "color_selection"
 	// Write a SQL query to retrieve the colors from the database
-	var color_options = 'SELECT hex_value FROM favorite_colors;';
+	var color_options = "SELECT hex_value FROM favorite_colors;";
 	// Write a SQL query to retrieve the color message for the selected color
-	var color_message = 'SELECT color_msg FROM favorite_colors;';
+	var color_message = "SELECT color_msg FROM favorite_colors;";
 	db.task('get-everything', task => {
         return task.batch([
             task.any(color_options),
@@ -162,9 +162,9 @@ app.post('/home/pick_color', function(req, res) {
 	var color_name = req.body.color_name;
 	var color_message = req.body.color_message;
 	// Write a SQL statement to insert a color into the favorite_colors table
-	var insert_statement ='INSERT INTO favorite_colors(hex_value, name, color_msg) VALUES($1, $2, $3) ON CONFLICT DO NOTHING;';
+	var insert_statement ="INSERT INTO favorite_colors(hex_value, name, color_msg) VALUES($1, $2, $3) ON CONFLICT DO NOTHING;";
 	// Write a SQL statement to retrieve all of the colors in the favorite_colors table
-	var color_select =  'SELECT * FROM favorite_colors;';
+	var color_select = "SELECT * FROM favorite_colors;";
 
 	db.task('get-everything', task => {
         return task.batch([
@@ -196,29 +196,29 @@ app.post('/home/pick_color', function(req, res) {
 
 //#5. Team Stats Page 
 app.get('/team_stats', function(req, res) {
-	var gameStats = 'SELECT football_games.* (CASE WHEN home_score > visitor_score THEN "CU Boulder!" ELSE visitor_name END) AS Winner FROM football_games ORDERY BY game_date;';
-	var w = 'SELECT COUNT(*) AS Wins FROM football_games WHERE home_score > visitor_score;';
-	var l = 'SELECT COUNT(*) AS Losses FROM football_games WHERE home_score < visitor_score;';
+	var gameStats = "SELECT football_games.* (CASE WHEN home_score > visitor_score THEN 'CU Boulder!' ELSE visitor_name END) AS Winner FROM football_games ORDERY BY game_date;";
+	var w = "SELECT COUNT(*) AS Wins FROM football_games WHERE home_score > visitor_score;";
+	var l = "SELECT COUNT(*) AS Losses FROM football_games WHERE home_score < visitor_score;";
 	//Loading Tables with Team Stats Data 
-	db.task('load-stats', task => 
+	db.task('load-stats', task => {
         task.batch([
 			task.any(gameStats), 
 			task.any(w), 
 			task.any(l)
-        ])
-	)
+        ]);
+	})
 	
-    .then(teamStats => 
+    .then(teamStats => {
     	res.render('pages/team_stats',{
-				my_title: "Team Stats",
-				//game date 
-				gameData: teamStats[0], 
-				//wins
-				wins: teamStats[1][0].games_won,
-				//losses 
-				loss: teamStats[2][0].games_lost
-			})
-    )
+			my_title: "Team Stats",
+			//game date 
+			gameData: teamStats[0], 
+			//wins
+			wins: teamStats[1],
+			//losses 
+			loss: teamStats[2]
+		})
+	})
     .catch(err => {
             console.log('error', err);
             res.render('pages/team_stats', {
@@ -234,7 +234,7 @@ app.get('/team_stats', function(req, res) {
 
 //#6. Player Info Page
 app.get('/player_info', function(req, res){
-	var players = 'SELECT * FROM football_players ORDER BY id;';
+	var players = "SELECT * FROM football_players ORDER BY id;";
 	db.task('load-players', task =>
 		task.any(players)
 	)
@@ -249,7 +249,7 @@ app.get('/player_info', function(req, res){
 
 	.catch(error => {
 		console.log('error', err); 
-		response.render('pages/player_info', {
+		res.render('pages/player_info', {
 			my_title: 'Player Info', 
 			players: '', 
 			selected: ''
@@ -257,21 +257,35 @@ app.get('/player_info', function(req, res){
 	});
 });
 
-app.get('/player_info/selectPlayer', function(req, res){
-	var id = parseInt(req.query.player_choice || 0);
+app.get('/player_info/post', function(req, res){
+	var selectedPlayer = req.query.player_choice; 
+	var players = "SELECT * FROM football_players ORDER BY id;";
+	var numGames = "SELECT COUNT(*) FROM football_games WHERE players = any(' + player +');";
 
-	selectPlayers = 'SELECT * FROM football_players ORDER BY id;';
-	selectedPlayer = 'SELECT * FROM football_players WHERE id=$1;', id; 
+	db.task('get-everything', task => {
+		return task.batch ([
+			task.any(players), 
+			task.any(games)
+		]);
+	})
 
-	db.task('load-players', task =>
-		task.batch([
-			task.any(selectPlayers), 
-			task.oneOrNone(selectedPlayer)
-		])
+	.then(data => {
+		res.render('pages/player_info', {
+			my_title: "Player Info", 
+			players: data[0], 
+			numGames: data[1]
+		})
+	})
 
-		.then
-	)
-})
+	.catch(error => {
+		console.log('error', err); 
+		res.render('pages/player_info', {
+			my_title: 'Player Info', 
+			players: '', 
+			numGames: ''
+		})
+	});
+});
 
 
 app.listen(3000);
